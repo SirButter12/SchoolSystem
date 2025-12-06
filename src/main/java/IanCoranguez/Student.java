@@ -24,6 +24,13 @@ public class Student {
     private static int nextId = 0;
 
     //methods
+    /**
+     * Creates a new student object, and generates an unique id with the format S000000
+     * @param studentName the student name
+     * @param gender student gender
+     * @param address student address
+     * @param department student department
+     */
     public Student(String studentName, Gender gender, Address address, Department department) {
         this.studentId = String.format("S%06d", nextId++);
         this.studentName = studentName;
@@ -32,18 +39,28 @@ public class Student {
         this.department = department;
     }
 
+    /**
+     * registers a course in the student registered courses by calling the registerStudent method of the course object we want to register the student in
+     * @param course the course we want to register the student in
+     * @return true if it was succesfully registered, false if the student was already registered in the course
+     */
     public boolean registerCourse(Course course){
         return course.registerStudent(this);
     }
 
+    /**
+     * eliminates a course from the student registeredCourses by calling the removeStudent method of the course object we want to eliminate the student from
+     * @param course the course we want to eliminate the student from
+     * @return true if it was succesfully removed, false if the student was not in the course in the first place
+     */
     public boolean dropCourse(Course course) {
         return course.removeStudent(this);
     }
 
-    public String toSimplifiedString(){
-        return String.format("Student{ name: %s id: %s department: %s }", studentName, studentId, department);
-    }
-
+    /**
+     * Describes the object as a string
+     * @return the object described as a string
+     */
     public String toString(){
         String courses = "";
         if (!registeredCourses.isEmpty()){
@@ -62,6 +79,17 @@ public class Student {
                 "}", studentId, studentName, gender, address, department, courses);
     }
 
+    /**
+     * A simplified version of toString this helps in other classes' toString method
+     * @return the simplified string of the object
+     */
+    public String toSimplifiedString(){
+        return String.format("Student{ name: %s id: %s department: %s }", studentName, studentId, department);
+    }
+
+    /**
+     * enumerated the possible genders for the student
+     */
     public enum Gender{
         MALE, FEMALE
     }

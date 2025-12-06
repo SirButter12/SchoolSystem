@@ -2,6 +2,11 @@ package util;
 
 
 public class Util {
+    /**
+     *Converts any string into titleCase
+     * @param str the string to be converted to title case
+     * @return the string in titleCase
+     */
     public static String toTitleCase(String str){
         str = str.trim();
         str = str.toLowerCase();
