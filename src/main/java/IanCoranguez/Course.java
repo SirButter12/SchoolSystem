@@ -2,6 +2,7 @@ package IanCoranguez;
 
 import lombok.Getter;
 import lombok.Setter;
+import util.Util;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class Course {
 
     private boolean isAssignmentWeightValid() {
         if (assignments.isEmpty()){
-            return false;
+            return true;
         }
 
         double assWeightSum =0;
@@ -37,7 +38,7 @@ public class Course {
             assWeightSum += assignment.getWeight();
         }
 
-        return !(Math.abs(1.0 - assWeightSum) > 0.000001);
+        return assWeightSum < 1.0;
     }
 
     public boolean registerStudent(Student student) {
@@ -53,6 +54,7 @@ public class Course {
 
         finalScores.add(null);
 
+        student.getRegisteredCourses().add(this);
         return true;
     }
 
@@ -134,7 +136,7 @@ public class Course {
         }
         if (!this.assignments.isEmpty()){
             for (Assignment assignment: this.assignments){
-                students += assignment.toSimplifiedString() + "\n";
+                assignments += assignment.toSimplifiedString() + "\n";
             }
         }
 
@@ -162,18 +164,38 @@ public class Course {
         return new ArrayList<>(assignments);
     }
 
+    void displayScores(){
+        int amoStudents = registeredStudents.size();
+        int amoAssignments = assignments.size();
 
+        String[] studentNames = new String[amoStudents];
+        String[] assignmentNames = new String[amoAssignments];
 
+        for (int i = 0; i < amoStudents; i++){
+            studentNames[i] = Util.toTitleCase(registeredStudents.get(i).getStudentName());
+        }
 
-    /*   6. `void displayScores()` // displays the scores of a course in a table, with the assignment averages and student weighted average (helper methods might be required).
+        for (int i = 0; i < amoAssignments; i++){
+            assignmentNames[i] = Util.toTitleCase(assignments.get(i).getAssignmentName());
+        }
 
-          ``` data
-         example:
-          Course: Programming 1(C-D00-01)
-                                  Assignment01   Assignment02   Assignment03         Exam01         Exam02    Final Score
-                  Ethan Collins             82             82             76             85             80             82
-                  Lucas Bennett             97             92             84             67             90             83
-                  Ava Harrington            91             68             82             83             83             82
-                  Average                   90             81             81             78             84
-    */
+        System.out.printf("%-14s", "");
+        for (String assignmentName: assignmentNames) {
+            System.out.printf("%14s ", assignmentName);
+        }
+        System.out.println("   Final Score");
+
+        for (int i = 0; i < studentNames.length; i++){
+            System.out.printf("%-14s",studentNames[i]);
+            for (int j = 0; j < assignmentNames.length; j++) {
+                System.out.printf("%14d",assignments.get(j).getScores().get(i));
+            }
+            System.out.printf("%14.0f\n", finalScores.get(i));
+        }
+
+        System.out.printf("%-14s", "average");
+        for (Assignment assignment: assignments){
+            System.out.printf("%14s", assignment.getAvgScore());
+        }
+    }
 }

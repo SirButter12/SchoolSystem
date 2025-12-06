@@ -19,6 +19,7 @@ public class Student {
     private Address address;
     @Getter @Setter
     private Department department;
+    @Getter
     private ArrayList<Course> registeredCourses = new ArrayList<>();
     private static int nextId = 0;
 
@@ -33,12 +34,7 @@ public class Student {
     }
 
     public boolean registerCourse(Course course){
-        if (course.registerStudent(this)){
-            registeredCourses.add(course);
-            return true;
-        }
-
-        return false;
+        return course.registerStudent(this);
     }
 
     public boolean dropCourse(Course course) {
@@ -77,10 +73,6 @@ public class Student {
                 "registered courses: \n" +
                 "%s \n" +
                 "}", studentId, studentName, gender, address, department, courses);
-    }
-
-    public ArrayList<Course> getRegisteredCourses(){
-        return new ArrayList<>(registeredCourses);
     }
 
     public enum Gender{
