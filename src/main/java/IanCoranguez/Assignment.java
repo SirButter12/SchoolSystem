@@ -81,6 +81,11 @@ public class Assignment {
         return new ArrayList<>(scores);
     }
 
+    public String toSimplifiedString(){
+        return String.format("Assignment{ name = %s id = %s weight = %s}", assignmentName, assignmentId, weight);
+    }
+
+
     @Override
     public String toString() {
         return "Assignment{" +

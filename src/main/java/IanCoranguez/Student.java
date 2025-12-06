@@ -1,25 +1,25 @@
 package IanCoranguez;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
 @EqualsAndHashCode
 public class Student {
     //fields
-    //   1. `String studentId`   // 6-digits starts with a character `S`. This id should be increased automatically.
+    @Getter
     private String studentId;
-    //   2. `String studentName`
+    @Getter @Setter
     private String studentName;
-    //   3. `Gender gender`      // MALE FEMALE
+    @Getter
     private Gender gender;
-    //   4. `Address address`
+    @Getter @Setter
     private Address address;
-    //   5. `Department department`
+    @Getter @Setter
     private Department department;
-    //   6. `ArrayList<Course> registeredCourses`
     private ArrayList<Course> registeredCourses = new ArrayList<>();
-    //   7. `static int nextId`  // indicates the next ID that will be used
     private static int nextId = 0;
 
     //methods
@@ -52,15 +52,37 @@ public class Student {
     /*   4. `toSimplifiedString` // converts a student to a simple string with only the `studentId`, the `studentName`, and `departmentName`.
      This method is called in `Course` `toString()`.
      */
+    public String toSimplifiedString(){
+        return String.format("Student{ name: %s id: %s department: %s }", studentName, studentId, department);
+    }
+
 
     /*   5. `toString` // converts a student to a string that contains the `studentId`, the `studentName`, the `gender`, the `address` and the `department`,
      and the `registeredCourses`
     (only the `courseId`, the `courseName`, and the `departmentName`)
      */
+    public String toString(){
+        String courses = "";
+        if (!registeredCourses.isEmpty()){
+            for (Course registeredCourse: registeredCourses){
+                courses += registeredCourse.toSimplifiedString() + "\n";
+            }
+        }
+        return String.format("Student { \n" +
+                "id = %s \n" +
+                "name = %s \n" +
+                "gender = %s \n" +
+                "address = %s \n" +
+                "department = %s \n" +
+                "registered courses: \n" +
+                "%s \n" +
+                "}", studentId, studentName, gender, address, department, courses);
+    }
 
-    //   6. equals
-    //   7. getters
-    //   8. setters
+    public ArrayList<Course> getRegisteredCourses(){
+        return new ArrayList<>(registeredCourses);
+    }
+
     public enum Gender{
         MALE, FEMALE
     }

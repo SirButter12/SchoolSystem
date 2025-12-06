@@ -1,12 +1,19 @@
 package IanCoranguez;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 
 public class Course {
     //fields
+    @Getter
     private String courseId;
+    @Getter @Setter
     private String courseName;
+    @Getter @Setter
     private double credits;
+    @Getter @Setter
     private Department department;
     private ArrayList<Assignment> assignments = new ArrayList<>();
     private ArrayList<Student> registeredStudents = new ArrayList<>();
@@ -112,6 +119,50 @@ public class Course {
             finalScores.add(avg);
         }
     }
+
+    public String toSimplifiedString(){
+        return String.format("Course{ name: %s id: %s department: %s}", courseName, courseId, department);
+    }
+
+    public String toString(){
+        String students = "";
+        String assignments = "";
+        if (!registeredStudents.isEmpty()){
+            for (Student registeredStudent: registeredStudents){
+                students += registeredStudent.toSimplifiedString() + "\n";
+            }
+        }
+        if (!this.assignments.isEmpty()){
+            for (Assignment assignment: this.assignments){
+                students += assignment.toSimplifiedString() + "\n";
+            }
+        }
+
+        return String.format("Course { \n" +
+                "id = %s \n" +
+                "name = %s \n" +
+                "credits = %s \n" +
+                "department = %s \n" +
+                "registered students: \n" +
+                "%s \n" +
+                "Assignments: \n" +
+                "%s" +
+                "}", courseId, courseName, credits, department, students, assignments);
+    }
+
+    ArrayList<Student> getRegisteredStudents(){
+        return new ArrayList<>(registeredStudents);
+    }
+
+    ArrayList<Double> getFinalScores(){
+        return new ArrayList<>(finalScores);
+    }
+
+    ArrayList<Assignment> getAssignments(){
+        return new ArrayList<>(assignments);
+    }
+
+
 
 
     /*   6. `void displayScores()` // displays the scores of a course in a table, with the assignment averages and student weighted average (helper methods might be required).
