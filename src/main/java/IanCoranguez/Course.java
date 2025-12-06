@@ -68,8 +68,8 @@ public class Course {
 
         registeredStudents.add(student);
 
-        for(int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).addScore(null);
+        for (Assignment assignment : assignments) {
+            assignment.addScore(null);
         }
 
         finalScores.add(null);
@@ -96,8 +96,8 @@ public class Course {
 
         student.getRegisteredCourses().remove(this);
 
-        for (int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).removeScore(idx);
+        for (Assignment assignment : assignments) {
+            assignment.removeScore(idx);
         }
         return true;
     }
@@ -152,8 +152,8 @@ public class Course {
      */
     public void generateScores(){
         if (!assignments.isEmpty()) {
-            for (int i = 0; i < assignments.size(); i++) {
-                assignments.get(i).fillScoresRandom(registeredStudents.size());
+            for (Assignment assignment : assignments) {
+                assignment.fillScoresRandom(registeredStudents.size());
             }
         }
 
@@ -238,7 +238,7 @@ public class Course {
         }
         if (!this.assignments.isEmpty()){
             for (Assignment assignment: this.assignments){
-                assignments += assignment.toSimplifiedString() + "\n";
+                assignments += assignment.toString() + "\n";
             }
         }
 
