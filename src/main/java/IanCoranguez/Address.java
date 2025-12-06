@@ -19,13 +19,16 @@ public class Address {
     private String postalCode;
 
     /**
-     * creates a new address object filling its fields with the constructor's parameter, it also checks if the postal code is valid
-     * if it is not valid, the street number will be set to -1 and the rest of the fields will be set to null
-     * @param streetNo the street number of the address
-     * @param street the street name of the address
-     * @param city the city where the address is located
-     * @param province the province
-     * @param postalCode the postal code
+     * Creates a new Address object.
+     * - Initializes the street number, street name, city, province, and postal code.
+     * - Validates the postal code using the {@link #isPostalCodeValid(String)} method.
+     * - If the postal code is invalid, streetNo is set to -1 and the remaining fields are set to null.
+     *
+     * @param streetNo   the street number of the address
+     * @param street     the street name
+     * @param city       the city of the address
+     * @param province   the province of the address, using the {@link Province} enum
+     * @param postalCode the postal code in the format LNLNLN (L = letter, N = digit)
      */
     public Address(int streetNo, String street, String city, Province province, String postalCode) {
         if (Address.isPostalCodeValid(postalCode)){
@@ -45,11 +48,14 @@ public class Address {
     }
 
     /**
-     * checks if the postal code is valid. by checking if it follows the following 6-digit format: LNLNLN where N is a number
-     * an L is a letter
-     * @param postalCode the postal code to be validated
-     * @return true if it's valid, false otherwise
+     * Validates a Canadian postal code.
+     * - Checks that the postal code is exactly 6 characters long.
+     * - The expected format is LNLNLN, where L is a letter and N is a digit.
+     *
+     * @param postalCode the postal code to validate
+     * @return true if the postal code is valid, false otherwise
      */
+
     public static boolean isPostalCodeValid(String postalCode){
         if (postalCode == null || postalCode.length() != 6){
             return false;
@@ -73,7 +79,7 @@ public class Address {
     }
 
     /**
-     *Enumerates all canadian provinces with their official abreviation.
+     * Enumerates all Canadian provinces with their official abbreviations.
      */
     public enum Province {
         AB, BC, MB, NL, NS, ON, QC, YT, NB, NT, NU, PE, SK

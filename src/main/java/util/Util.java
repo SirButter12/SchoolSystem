@@ -1,11 +1,18 @@
 package util;
 
-
+/**
+ * Utility class containing common helper methods.
+ */
 public class Util {
     /**
-     *Converts any string into titleCase
-     * @param str the string to be converted to title case
-     * @return the string in titleCase
+     * Converts a given string to Title Case.
+     * <p>
+     * Each word's first character is converted to uppercase and the remaining characters
+     * are converted to lowercase. Extra spaces are trimmed.
+     * </p>
+     *
+     * @param str the input string to be converted
+     * @return the string in Title Case, or an empty string if input is null or empty
      */
     public static String toTitleCase(String str){
         str = str.trim();

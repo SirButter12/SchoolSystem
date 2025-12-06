@@ -4,6 +4,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Represents an academic department in the institution.
+ * Each department has a unique ID and a name.
+ * The class ensures that department names are valid (letters and spaces only)
+ * and provides a way to safely change the department's name.
+ */
 @ToString
 @EqualsAndHashCode
 @Getter
@@ -15,8 +21,12 @@ public class Department {
 
     //Methods
     /**
-     * creates a new department name, it first checks if the department name is valid, if it isn't it will set all department fields to null
-     * @param departmentName the department name
+     * Creates a new Department object.
+     * - Generates a unique ID for the department in the format "DXX", where XX is a zero-padded number.
+     * - Validates the department name: only alphabetic characters and spaces are allowed.
+     * - If the name is invalid, both departmentId and departmentName are set to null.
+     *
+     * @param departmentName the name of the department
      */
     public Department(String departmentName) {
         if (!Department.isDepartmentNameValid(departmentName)) {
@@ -29,8 +39,10 @@ public class Department {
     }
 
     /**
-     * changes the department name
-     * if the name is not valid the name doesn't get changed
+     * Updates the department name.
+     * - The new name is only applied if it is valid (letters and spaces only).
+     * - If the name is invalid, the departmentName remains unchanged.
+     *
      * @param departmentName the new department name
      */
     public void setDepartmentName(String departmentName) {
@@ -40,9 +52,12 @@ public class Department {
     }
 
     /**
-     * Checks if the department name is valid by checking if it just contains letters and spaces
-     * @param departmentName the department name
-     * @return true if it is valid, false otherwise
+     * Validates a department name.
+     * - Only alphabetic characters and spaces are considered valid.
+     * - Null or empty strings are considered invalid.
+     *
+     * @param departmentName the department name to validate
+     * @return true if the name is valid, false otherwise
      */
     public static boolean isDepartmentNameValid(String departmentName) {
         if (departmentName == null || departmentName.isEmpty()) {

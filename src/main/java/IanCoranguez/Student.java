@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a student in the system.
+ * Each student has a unique ID, name, gender, address, department,
+ * and a list of registered courses.
+ */
 @EqualsAndHashCode
 public class Student {
     //fields
@@ -25,11 +30,12 @@ public class Student {
 
     //methods
     /**
-     * Creates a new student object, and generates an unique id with the format S000000
-     * @param studentName the student name
-     * @param gender student gender
-     * @param address student address
-     * @param department student department
+     * Creates a new Student object and generates a unique ID in the format S000000.
+     *
+     * @param studentName the student's full name
+     * @param gender      the student's gender
+     * @param address     the student's address
+     * @param department  the student's department
      */
     public Student(String studentName, Gender gender, Address address, Department department) {
         this.studentId = String.format("S%06d", nextId++);
@@ -40,26 +46,29 @@ public class Student {
     }
 
     /**
-     * registers a course in the student registered courses by calling the registerStudent method of the course object we want to register the student in
-     * @param course the course we want to register the student in
-     * @return true if it was succesfully registered, false if the student was already registered in the course
+     * Registers this student in a course by calling the course's registerStudent method.
+     *
+     * @param course the course to register the student in
+     * @return true if the student was successfully registered, false if already registered
      */
     public boolean registerCourse(Course course){
         return course.registerStudent(this);
     }
 
     /**
-     * eliminates a course from the student registeredCourses by calling the removeStudent method of the course object we want to eliminate the student from
-     * @param course the course we want to eliminate the student from
-     * @return true if it was succesfully removed, false if the student was not in the course in the first place
+     * Drops this student from a course by calling the course's removeStudent method.
+     *
+     * @param course the course to drop the student from
+     * @return true if the student was successfully removed, false if not enrolled
      */
     public boolean dropCourse(Course course) {
         return course.removeStudent(this);
     }
 
     /**
-     * Describes the object as a string
-     * @return the object described as a string
+     * Returns a detailed string representation of the student, including registered courses.
+     *
+     * @return a string describing the student
      */
     public String toString(){
         String courses = "";
@@ -80,15 +89,17 @@ public class Student {
     }
 
     /**
-     * A simplified version of toString this helps in other classes' toString method
-     * @return the simplified string of the object
+     * Returns a simplified string representation of the student.
+     * This is used for concise display in other classes' toString methods.
+     *
+     * @return a simplified string describing the student
      */
     public String toSimplifiedString(){
         return String.format("Student{ name: %s id: %s department: %s }", studentName, studentId, department);
     }
 
     /**
-     * enumerated the possible genders for the student
+     * Enumeration representing all the possible genders of a student.
      */
     public enum Gender{
         MALE, FEMALE

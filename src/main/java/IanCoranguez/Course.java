@@ -22,11 +22,11 @@ public class Course {
     private static int nextId = 0;
 
     /**
-     *Creates a new course object with the parameters specified, it also initializes an ID under the following format
-     *C-DepartmentId-courseId
-     * @param courseName the course name
-     * @param credits the credits this course should have
-     * @param department the department of this course
+     * Creates a new course object and generates a unique course ID in the format C-DepartmentId-courseId.
+     *
+     * @param courseName the name of the course
+     * @param credits the number of credits this course provides
+     * @param department the department this course belongs to
      */
     public Course(String courseName, double credits, Department department) {
         this.courseId = String.format("C-%s-%02d", department.getDepartmentId(), nextId++);
@@ -36,9 +36,10 @@ public class Course {
     }
 
     /**
-     * This will check if the sum of all assigment weights is less or equal 1.0, simply because assigmets will be added one by one
-     * and an assigment weight sum != 1.0 will only cause that no assigment will be registered if its weight is not exactly one
-     * @return returns true if the sum of all assigments weights is less or equal to one false otherwise
+     * Checks if the sum of all assignment weights in this course is <= 1.0.
+     * Ensures that adding a new assignment does not exceed the maximum total weight.
+     *
+     * @return true if the sum of all assignments' weights is <= 1.0, false otherwise
      */
     private boolean isAssignmentWeightValid() {
         if (assignments.isEmpty()){
@@ -54,12 +55,14 @@ public class Course {
     }
 
     /**
-     * Will first check if student is already enrolled in the class, if it is the case, returns false
-     * otherwise it will first add it to the registeredStudents list, then for each already existent assigment it will
-     * add a new null element, then it will add a nell element to the final scores, and at the end it will add
-     * this course object to the students registeredCourses list
-     * @param student the student to be added
-     * @return returns true if the student was enrolled succesfully false if they were already enrolled in the course
+     * Registers a student in this course.
+     * - Adds the student to the registeredStudents list.
+     * - Adds a placeholder (null) for each existing assignment score.
+     * - Adds a placeholder (null) in finalScores.
+     * - Adds this course to the student's registeredCourses list.
+     *
+     * @param student the student to register
+     * @return true if the student was successfully registered, false if already enrolled
      */
     public boolean registerStudent(Student student) {
         if (registeredStudents.contains(student)) {
@@ -79,67 +82,74 @@ public class Course {
     }
 
     /**
-     * Will first check if student is not enrolled in the class, if it is the case, returns false
-     * otherwise it will first remove it from the registeredStudents list, then for each already existent assigment it will
-     * remove its corresponding element, then it will remove its corresponding element from the final scores, and at the end it will remove
-     * this course object to the students registeredCourses list
-     * @param student the student to be removed from the course
-     * @return returns true if the student was removed succesfully false if it wasn't in the course in the first place
+     * Removes a student from this course.
+     * - Removes the student from registeredStudents.
+     * - Removes the student's scores from each assignment.
+     * - Removes the student's final score from finalScores.
+     * - Removes this course from the student's registeredCourses.
+     *
+     * @param student the student to remove
+     * @return true if the student was successfully removed, false if they were not enrolled
      */
     public boolean removeStudent(Student student) {
         if (!registeredStudents.contains(student)) {
             return false;
         }
+
         int idx = registeredStudents.indexOf(student);
-
-        registeredStudents.remove(idx);
-
-        finalScores.remove(idx);
-
-        student.getRegisteredCourses().remove(this);
 
         for (Assignment assignment : assignments) {
             assignment.removeScore(idx);
         }
+
+        finalScores.remove(idx);
+
+        registeredStudents.remove(idx);
+
+        student.getRegisteredCourses().remove(this);
+
         return true;
     }
 
     /**
-     * calculates the weighted average of a student. This average will be incomplete unless all assigments weights sum 1.0
-     * which means that this is more like how much of the final score has been accumulated. it also ignores the null scores
-     * @return the weighted average of a student
+     * Calculates the weighted average score for all students in this course.
+     * - Ignores null scores.
+     * - If assignment weights sum < 1.0, the final score represents a partial accumulation.
+     * - Updates finalScores list with new averages.
      */
-    //   3. `double[] calcStudentsAverage()` // calculates the weighted average score of a student
-    public double[] calcStudentsAverage() {
+    public void calcStudentsAverage() {
+        finalScores.clear();
         int size = registeredStudents.size();
-        double[] avgs = new double[size];
 
         if (assignments.isEmpty()){
-            return avgs;
+            for (int i = 0; i < size; i++){
+                finalScores.add(0.0);
+            }
+            return;
         }
 
         for (int i = 0; i < size; i++) {
+            double avg = 0;
             for (Assignment assignment: assignments) {
                 Integer score = assignment.getScores().get(i);
                 if (score == null){
                     continue;
                 }
-                avgs[i] += score * assignment.getWeight();
+                avg += score * assignment.getWeight();
             }
+            finalScores.add(avg);
         }
-
-        return avgs;
     }
 
     /**
-     * This will create a new assigment, it will first check if the sum of all assigments (including the new one) is less or equal to one
-     * if so the assigment will be created and added to the assigment list
-     * @param assignmentName The assignment name for example: Assignmen01
-     * @param weight the weight of the assigment (IMPORTANT: This should go from 0.0 to 1.0 for the assigment to be valid)
-     * @return returns true if the assigment was succesfully added. false if it was not a valid assignment
+     * Represents a course in the academic system.
+     * Each course has a unique ID, name, credit value, a department, a list of registered students,
+     * a list of assignments, and calculated final scores for each student.
+     * Supports registering/dropping students, adding assignments, generating random scores,
+     * calculating weighted averages, and displaying scores in a formatted table.
      */
     public boolean addAssignment(String assignmentName, double weight) {
-        assignments.add(new Assignment(assignmentName, weight, registeredStudents.size()));
+        assignments.add(new Assignment(assignmentName, weight, registeredStudents.size(), this));
 
         if (!isAssignmentWeightValid()){
             assignments.removeLast();
@@ -150,7 +160,8 @@ public class Course {
     }
 
     /**
-     * This generates random scores for each student assignment and calculates the final score of each student
+     * Generates random scores for each student in each assignment.
+     * Then recalculates all students' final scores.
      */
     public void generateScores(){
         if (!assignments.isEmpty()) {
@@ -159,11 +170,7 @@ public class Course {
             }
         }
 
-        double[] avgs = calcStudentsAverage();
-        finalScores.clear();
-        for (double avg : avgs) {
-            finalScores.add(avg);
-        }
+        calcStudentsAverage();
     }
 
     /** Displays the scores in the following format
