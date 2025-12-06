@@ -94,6 +94,8 @@ public class Course {
 
         registeredStudents.remove(idx);
 
+        finalScores.remove(idx);
+
         student.getRegisteredCourses().remove(this);
 
         for (Assignment assignment : assignments) {
@@ -104,7 +106,7 @@ public class Course {
 
     /**
      * calculates the weighted average of a student. This average will be incomplete unless all assigments weights sum 1.0
-     * which means that this is more like how much of the final score has been accumulated
+     * which means that this is more like how much of the final score has been accumulated. it also ignores the null scores
      * @return the weighted average of a student
      */
     //   3. `double[] calcStudentsAverage()` // calculates the weighted average score of a student
@@ -188,9 +190,6 @@ public class Course {
             assignmentNames[i] = Util.toTitleCase(assignments.get(i).getAssignmentName());
         }
 
-        //Makes sure there's final scores to print
-        generateScores();
-
         //print the course name and the id
         System.out.printf("Course: %s (%s)\n", courseName, courseId);
 
@@ -218,7 +217,7 @@ public class Course {
         System.out.printf("%-14s", "average");
 
         for (Assignment assignment: assignments) {
-            System.out.printf("%14.0s ", assignment.getAvgScore());
+            System.out.printf("%14.0f ", assignment.getAvgScore());
         }
 
         System.out.printf("\n");
