@@ -31,13 +31,13 @@ public class Address {
       only valid `postalCode` will be assigned to fields.
      */
     public static boolean isPostalCodeValid(String postalCode){
-        if (postalCode == null || postalCode.isEmpty()){
+        if (postalCode == null || postalCode.length() != 6){
             return false;
         }
 
         for (int i = 0; i < 6; i++) {
             if (i % 2 == 0){
-                if (Character.isAlphabetic(postalCode.charAt(i))){
+                if (Character.isLetter(postalCode.charAt(i))){
                     continue;
                 }
                 return false;
