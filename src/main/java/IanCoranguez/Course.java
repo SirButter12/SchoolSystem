@@ -38,7 +38,7 @@ public class Course {
             assWeightSum += assignment.getWeight();
         }
 
-        return assWeightSum < 1.0;
+        return assWeightSum <= 1.0;
     }
 
     public boolean registerStudent(Student student) {
@@ -65,6 +65,8 @@ public class Course {
         int idx = registeredStudents.indexOf(student);
 
         registeredStudents.remove(idx);
+
+        student.getRegisteredCourses().remove(this);
 
         for (int i = 0; i < assignments.size(); i++) {
             assignments.get(i).removeScore(idx);
@@ -179,6 +181,7 @@ public class Course {
             assignmentNames[i] = Util.toTitleCase(assignments.get(i).getAssignmentName());
         }
 
+        //prints the top row
         System.out.printf("%-14s", "");
         for (String assignmentName: assignmentNames) {
             System.out.printf("%14s ", assignmentName);
@@ -188,14 +191,16 @@ public class Course {
         for (int i = 0; i < studentNames.length; i++){
             System.out.printf("%-14s",studentNames[i]);
             for (int j = 0; j < assignmentNames.length; j++) {
-                System.out.printf("%14d",assignments.get(j).getScores().get(i));
+                System.out.printf("%14d ",assignments.get(j).getScores().get(i));
             }
             System.out.printf("%14.0f\n", finalScores.get(i));
         }
 
         System.out.printf("%-14s", "average");
         for (Assignment assignment: assignments){
-            System.out.printf("%14s", assignment.getAvgScore());
+            System.out.printf("%14.2s ", assignment.getAvgScore());
         }
+
+        System.out.printf("\n");
     }
 }

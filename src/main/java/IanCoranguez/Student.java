@@ -24,7 +24,6 @@ public class Student {
     private static int nextId = 0;
 
     //methods
-
     public Student(String studentName, Gender gender, Address address, Department department) {
         this.studentId = String.format("S%06d", nextId++);
         this.studentName = studentName;
@@ -38,25 +37,13 @@ public class Student {
     }
 
     public boolean dropCourse(Course course) {
-        if (course.removeStudent(this)){
-            registeredCourses.remove(course);
-            return true;
-        }
-        return false;
+        return course.removeStudent(this);
     }
 
-    /*   4. `toSimplifiedString` // converts a student to a simple string with only the `studentId`, the `studentName`, and `departmentName`.
-     This method is called in `Course` `toString()`.
-     */
     public String toSimplifiedString(){
         return String.format("Student{ name: %s id: %s department: %s }", studentName, studentId, department);
     }
 
-
-    /*   5. `toString` // converts a student to a string that contains the `studentId`, the `studentName`, the `gender`, the `address` and the `department`,
-     and the `registeredCourses`
-    (only the `courseId`, the `courseName`, and the `departmentName`)
-     */
     public String toString(){
         String courses = "";
         if (!registeredCourses.isEmpty()){
