@@ -23,8 +23,8 @@ public class Assignment {
     private static final Random rand = new Random();
 
     //methods
-    public Assignment(String assigmentName, double weight, int amountStudInCourse) {
-        this.assignmentName = assigmentName;
+    public Assignment(String assignmentName, double weight, int amountStudInCourse) {
+        this.assignmentName = assignmentName;
         this.weight = weight;
         this.assignmentId = String.format("%04d", nextId++);
         fillScoresRandom(amountStudInCourse);
@@ -33,6 +33,7 @@ public class Assignment {
 
     //this allows me to reuse generateRandomScore if I need it
     public void fillScoresRandom(int amountScoresNeeded) {
+        scores.clear();
         for (int i = 0; i < amountScoresNeeded; i++) {
             scores.add(generateRandomScore());
         }

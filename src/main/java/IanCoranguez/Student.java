@@ -1,9 +1,10 @@
 package IanCoranguez;
 
+import lombok.EqualsAndHashCode;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
+@EqualsAndHashCode
 public class Student {
     //fields
     //   1. `String studentId`   // 6-digits starts with a character `S`. This id should be increased automatically.
@@ -17,7 +18,7 @@ public class Student {
     //   5. `Department department`
     private Department department;
     //   6. `ArrayList<Course> registeredCourses`
-    private ArrayList<Course> registeredCourses;
+    private ArrayList<Course> registeredCourses = new ArrayList<>();
     //   7. `static int nextId`  // indicates the next ID that will be used
     private static int nextId = 0;
 
