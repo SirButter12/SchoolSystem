@@ -20,13 +20,13 @@ public class Course {
         this.department = department;
     }
 
-    private boolean isAssignmentWeightValid(){
+    private boolean isAssignmentWeightValid() {
         if (assignments.isEmpty()){
             return false;
         }
 
         double assWeightSum =0;
-        for (Assignment assignment: assignments){
+        for (Assignment assignment: assignments) {
             assWeightSum += assignment.getWeight();
         }
 
@@ -34,10 +34,8 @@ public class Course {
     }
 
     public boolean registerStudent(Student student) {
-        for (Student registeredStudent : registeredStudents) {
-            if (student.equals(registeredStudent)) {
-                return false;
-            }
+        if (registeredStudents.contains(student)) {
+            return false;
         }
 
         registeredStudents.add(student);
@@ -51,9 +49,22 @@ public class Course {
         return true;
     }
 
+    public boolean removeStudent(Student student) {
+        if (!registeredStudents.contains(student)) {
+            return false;
+        }
+        int idx = registeredStudents.indexOf(student);
+
+        registeredStudents.remove(idx);
+
+        for (int i = 0; i < assignments.size(); i++) {
+            assignments.get(i).removeScore(idx);
+        }
+        return true;
+    }
 
     //   3. `double[] calcStudentsAverage()` // calculates the weighted average score of a student
-    public double[] calcStudentsAverage(){
+    public double[] calcStudentsAverage() {
         int size = registeredStudents.size();
         double[] avgs = new double[size];
 
@@ -61,8 +72,8 @@ public class Course {
             return avgs;
         }
 
-        for (int i = 0; i < size; i++){
-            for (Assignment assignment: assignments){
+        for (int i = 0; i < size; i++) {
+            for (Assignment assignment: assignments) {
                 Integer score = assignment.getScores().get(i);
                 if (score == null){
                     continue;
@@ -76,11 +87,11 @@ public class Course {
 
 
     //   4. `boolean addAssignment(String assignmentName, double weight)` // adds a new assignment to the course.
-    public boolean addAssignment(String assgmentName, double weight){
+    public boolean addAssignment(String assgmentName, double weight) {
         assignments.add(new Assignment(assgmentName, weight, registeredStudents.size()));
 
         if (!isAssignmentWeightValid()){
-            assignments.remove(assignments.size() - 1);
+            assignments.removeLast();
             return false;
         }
 
@@ -89,8 +100,8 @@ public class Course {
 
     //   5. `void generateScores()` // generates random scores for each assignment and student, and calculates the final score for each student.
     public void generateScores(){
-        if (!assignments.isEmpty()){
-            for (int i = 0; i < assignments.size(); i++){
+        if (!assignments.isEmpty()) {
+            for (int i = 0; i < assignments.size(); i++) {
                 assignments.get(i).fillScoresRandom(registeredStudents.size());
             }
         }

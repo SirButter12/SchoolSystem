@@ -71,6 +71,11 @@ public class Assignment {
         calcAssignmentAvg();
     }
 
+    public void removeScore(int idx) {
+        scores.remove(idx);
+        calcAssignmentAvg();
+    }
+
     //this just makes sure that the average stays relevant and eliminates the risk of accidentally messing it up
     public ArrayList<Integer> getScores() {
         return new ArrayList<>(scores);
