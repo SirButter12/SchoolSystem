@@ -15,7 +15,7 @@ public class Util {
      * @return the string in Title Case, or an empty string if input is null or empty
      */
     public static String toTitleCase(String str) {
-        if (str == null || str.length() != 6) {
+        if (str == null) {
             return str;
         }
 

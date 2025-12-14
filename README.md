@@ -23,3 +23,6 @@ So basicalliy I've implemented what I was told to, but with some modifications t
   - calcStudentsAvg() now calculates the final scores diretly since it is the only thing it is used and will be used for so now it returns void rather than a double[]
   - generateScores will also calculare the final score of each student
   - all the get methods that should get a method now gets a deep copy rather than a shallow copy
+
+
+Junitesting: because of the complexity of the other methods, Only some of the methods that make sure the data is valid and the toTitleCase method were tested with junit. However, the project as a whole has already been tested and it works just fine.
