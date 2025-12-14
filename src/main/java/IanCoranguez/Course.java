@@ -6,6 +6,9 @@ import util.Util;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a course with a unique Id, it manages everything related to course's assigments, scores, and students
+ */
 public class Course {
     //fields
     @Getter
@@ -22,14 +25,14 @@ public class Course {
     private static int nextId = 0;
 
     /**
-     * Creates a new course object and generates a unique course ID in the format C-DepartmentId-courseId.
-     *
-     * @param courseName the name of the course
-     * @param credits the number of credits this course provides
-     * @param department the department this course belongs to
+     * Represents a course in the academic system.
+     * Each course has a unique ID, name, credit value, a department, a list of registered students,
+     * a list of assignments, and calculated final scores for each student.
+     * Supports registering/dropping students, adding assignments, generating random scores,
+     * calculating weighted averages, and displaying scores in a formatted table.
      */
     public Course(String courseName, double credits, Department department) {
-        this.courseId = String.format("C-%s-%02d", department.getDepartmentId(), nextId++);
+        this.courseId = department == null? null : String.format("C-%s-%02d", department.getDepartmentId(), nextId++);
         this.courseName = courseName;
         this.credits = credits;
         this.department = department;
@@ -65,6 +68,10 @@ public class Course {
      * @return true if the student was successfully registered, false if already enrolled
      */
     public boolean registerStudent(Student student) {
+        if (student == null) {
+            return false;
+        }
+
         if (registeredStudents.contains(student)) {
             return false;
         }
@@ -92,6 +99,10 @@ public class Course {
      * @return true if the student was successfully removed, false if they were not enrolled
      */
     public boolean removeStudent(Student student) {
+        if (student == null) {
+            return false;
+        }
+
         if (!registeredStudents.contains(student)) {
             return false;
         }
@@ -142,13 +153,16 @@ public class Course {
     }
 
     /**
-     * Represents a course in the academic system.
-     * Each course has a unique ID, name, credit value, a department, a list of registered students,
-     * a list of assignments, and calculated final scores for each student.
-     * Supports registering/dropping students, adding assignments, generating random scores,
-     * calculating weighted averages, and displaying scores in a formatted table.
+     * will add a new assignment to the Course's assignment list.
+     * @param assignmentName the assignments name
+     * @param weight the assignments weight
+     * @return true if the assignment weight was valid, false otherwise
      */
     public boolean addAssignment(String assignmentName, double weight) {
+        if (assignmentName == null) {
+            return false;
+        }
+
         assignments.add(new Assignment(assignmentName, weight, registeredStudents.size(), this));
 
         if (!isAssignmentWeightValid()){
@@ -163,7 +177,7 @@ public class Course {
      * Generates random scores for each student in each assignment.
      * Then recalculates all students' final scores.
      */
-    public void generateScores(){
+    public void generateScores() {
         if (!assignments.isEmpty()) {
             for (Assignment assignment : assignments) {
                 assignment.fillScoresRandom(registeredStudents.size());
@@ -181,8 +195,8 @@ public class Course {
      *Ava Harrington            91             68             82             83             83             82
      *Average                   90             81             81             78             84
      */
-    void displayScores(){
-        //stores the title cased student names and assigment names in arrrays so they are more easily accessed later
+    void displayScores() {
+        //stores the title cased student names and assigment names in arrays so they are more easily accessed later
         int amoStudents = registeredStudents.size();
         int amoAssignments = assignments.size();
 
@@ -234,16 +248,16 @@ public class Course {
      * describes the course object in a string
      * @return the object described in a string
      */
-    public String toString(){
+    public String toString() {
         String students = "";
         String assignments = "";
-        if (!registeredStudents.isEmpty()){
-            for (Student registeredStudent: registeredStudents){
+        if (!registeredStudents.isEmpty()) {
+            for (Student registeredStudent: registeredStudents) {
                 students += registeredStudent.toSimplifiedString() + "\n";
             }
         }
-        if (!this.assignments.isEmpty()){
-            for (Assignment assignment: this.assignments){
+        if (!this.assignments.isEmpty()) {
+            for (Assignment assignment: this.assignments) {
                 assignments += assignment.toString() + "\n";
             }
         }
@@ -264,20 +278,20 @@ public class Course {
      * describes the object with a simplified string. This method helps in other classes' toString method
      * @return the simplified string version of the object
      */
-    public String toSimplifiedString(){
+    public String toSimplifiedString() {
         return String.format("Course{ name: %s id: %s department: %s}", courseName, courseId, department);
     }
 
     //this makes sure that registeredStudents, finalScores and assigments can only be modified by the Course class
-    ArrayList<Student> getRegisteredStudents(){
+    ArrayList<Student> getRegisteredStudents() {
         return new ArrayList<>(registeredStudents);
     }
 
-    ArrayList<Double> getFinalScores(){
+    ArrayList<Double> getFinalScores() {
         return new ArrayList<>(finalScores);
     }
 
-    ArrayList<Assignment> getAssignments(){
+    ArrayList<Assignment> getAssignments() {
         return new ArrayList<>(assignments);
     }
 }

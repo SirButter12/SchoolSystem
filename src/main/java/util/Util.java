@@ -14,15 +14,19 @@ public class Util {
      * @param str the input string to be converted
      * @return the string in Title Case, or an empty string if input is null or empty
      */
-    public static String toTitleCase(String str){
+    public static String toTitleCase(String str) {
+        if (str == null || str.length() != 6) {
+            return str;
+        }
+
         str = str.trim();
         str = str.toLowerCase();
 
         String[] words = str.split(" ");
         str = "";
 
-        for (String word: words){
-            if (word.isEmpty()){
+        for (String word: words) {
+            if (word.isEmpty()) {
                 continue;
             }
 

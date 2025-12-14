@@ -28,7 +28,6 @@ public class Student {
     private ArrayList<Course> registeredCourses = new ArrayList<>();
     private static int nextId = 0;
 
-    //methods
     /**
      * Creates a new Student object and generates a unique ID in the format S000000.
      *
@@ -51,7 +50,7 @@ public class Student {
      * @param course the course to register the student in
      * @return true if the student was successfully registered, false if already registered
      */
-    public boolean registerCourse(Course course){
+    public boolean registerCourse(Course course) {
         return course.registerStudent(this);
     }
 
@@ -70,10 +69,10 @@ public class Student {
      *
      * @return a string describing the student
      */
-    public String toString(){
+    public String toString() {
         String courses = "";
-        if (!registeredCourses.isEmpty()){
-            for (Course registeredCourse: registeredCourses){
+        if (!registeredCourses.isEmpty()) {
+            for (Course registeredCourse: registeredCourses) {
                 courses += registeredCourse.toSimplifiedString() + "\n";
             }
         }
@@ -94,14 +93,14 @@ public class Student {
      *
      * @return a simplified string describing the student
      */
-    public String toSimplifiedString(){
+    public String toSimplifiedString() {
         return String.format("Student{ name: %s id: %s department: %s }", studentName, studentId, department);
     }
 
     /**
      * Enumeration representing all the possible genders of a student.
      */
-    public enum Gender{
+    public enum Gender {
         MALE, FEMALE
     }
 

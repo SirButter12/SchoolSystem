@@ -11,14 +11,14 @@ import java.util.Random;
  * Represents an assignment in a course.
  * Each assignment has a unique ID, name, weight, a list of student scores,
  * and a reference to the course it belongs to.
- * It supports random score generation and calculation of the assignment's average score.
+ * this reference just makes sure the course final scores calculation  doesn't become obselete when calling
+ * setWeight() function.
  */
 
 @EqualsAndHashCode
 public class Assignment {
-    //fields
     @Getter
-    private final String assignmentId;
+    private String assignmentId;
     @Getter @Setter
     private String assignmentName;
     @Getter
@@ -116,6 +116,10 @@ public class Assignment {
      * @param score the score to add (can be null)
      */
     public void addScore(Integer score) {
+        if (score == null) {
+            return;
+        }
+
         scores.add(score);
         calcAssignmentAvg();
     }
@@ -127,7 +131,7 @@ public class Assignment {
      * @param idx the index of the score to remove
      */
     public void removeScore(int idx) {
-        if (idx > scores.size() - 1 || idx < 0){
+        if (idx > scores.size() - 1 || idx < 0) {
             return;
         }
 
@@ -163,7 +167,11 @@ public class Assignment {
      *
      * @param weight the new weight of the assignment
      */
-    public void setWeight(double weight){
+    public void setWeight(double weight) {
+        if (fatherCourse == null) {
+            this.weight = Math.max(Math.min(1.0, weight), 0.0);
+        }
+
         this.weight = Math.max(Math.min(1.0, weight), 0.0);
         fatherCourse.calcStudentsAverage();
     }

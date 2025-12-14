@@ -10,6 +10,9 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
+/**
+ * Address class describing an address, it has only valid postal codes under de format LNLNLN (L = letter, N = digit)
+ */
 public class Address {
     //fields
     private int streetNo;
@@ -31,7 +34,7 @@ public class Address {
      * @param postalCode the postal code in the format LNLNLN (L = letter, N = digit)
      */
     public Address(int streetNo, String street, String city, Province province, String postalCode) {
-        if (Address.isPostalCodeValid(postalCode)){
+        if (Address.isPostalCodeValid(postalCode)) {
             this.streetNo = streetNo;
             this.street = street;
             this.city = city;
@@ -56,20 +59,20 @@ public class Address {
      * @return true if the postal code is valid, false otherwise
      */
 
-    public static boolean isPostalCodeValid(String postalCode){
-        if (postalCode == null || postalCode.length() != 6){
+    public static boolean isPostalCodeValid(String postalCode) {
+        if (postalCode == null || postalCode.length() != 6) {
             return false;
         }
 
         for (int i = 0; i < 6; i++) {
             if (i % 2 == 0){
-                if (Character.isLetter(postalCode.charAt(i))){
+                if (Character.isLetter(postalCode.charAt(i))) {
                     continue;
                 }
                 return false;
             }
 
-            if (Character.isDigit(postalCode.charAt(i))){
+            if (Character.isDigit(postalCode.charAt(i))) {
                 continue;
             }
             return false;

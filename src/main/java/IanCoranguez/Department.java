@@ -14,12 +14,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 public class Department {
-    //fields
     private String departmentId;
     private String departmentName;
     private static int nextId = 0;
 
-    //Methods
     /**
      * Creates a new Department object.
      * - Generates a unique ID for the department in the format "DXX", where XX is a zero-padded number.
